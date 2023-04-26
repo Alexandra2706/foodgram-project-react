@@ -63,7 +63,8 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |  
             cd foodgram-project-react
-            cd foodgram-project-react/infra
+            git pull
+            cd infra
             sudo docker-compose stop
             sudo docker-compose rm -f backend
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_backend:latest

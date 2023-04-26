@@ -54,11 +54,11 @@ sudo apt install docker.io
 ssh your_login@pu.bl.ic.ip
 ```
 
-Скопировать файлы docker-compose.yaml и nginx/default.conf на сервер в home/<ваш_username>/docker-compose.yaml и home/<ваш_username>/nginx/default.conf соответственно
+Скопировать файлы docker-compose.yml и nginx.conf на сервер в home/<ваш_username>/docker-compose.yaml и home/<ваш_username>/nginx/default.conf соответственно
 
 ```
- - docker-compose.yaml в home/<ваш_username>/docker-compose.yaml
- - nginx/default.conf в home/<ваш_username>/nginx/default.conf
+ - docker-compose.yaml в home/<ваш_username>/docker-compose.yml
+ - nginx.conf в home/<ваш_username>/nginx.conf
 ```
 
 Запушить проект на сервер:

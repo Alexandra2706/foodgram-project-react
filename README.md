@@ -78,11 +78,11 @@ docker-composer up
 Выполнить миграцииб импортировать данные, создать суперюзера, собрать статику:
 
 ```
-docker-compose exec web python manage.py migrate
-sudo docker-compose exec web python manage.py load_all_data
-sudo docker-compose exec web python manage.py load_tags
-docker-compose exec web python manage.py createsuperuser
-docker-compose exec web python manage.py collectstatic --no-input
+docker-compose exec backend python manage.py migrate
+sudo docker-compose exec backend python manage.py load_all_data
+sudo docker-compose exec backend python manage.py load_tags
+docker-compose exec backend python manage.py createsuperuser
+docker-compose exec backend python manage.py collectstatic --no-input
 ```
 
 Проект можно посмотреть по адресу:

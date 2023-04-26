@@ -132,4 +132,7 @@ dmypy.json
 .idea
 
 # папки со статикой и медиа
-media/
+!*media/.gitkeep
+media/*
+
+infra-dev/

@@ -7,15 +7,109 @@
 
 Полная документация к API находится по эндпоинту api/docs/redoc
 
-### Установка, Как запустить проект:
+![example workflow](https://github.com/alexandra2706/foodgram-project-react/actions/workflows/yamdb_workflow.yml/badge.svg)
 
-Клонировать репозиторий и перейти в него в командной строке:
+### Установка, Как запустить проект на сервере:
+
+Клонировать репозиторий:
 
 ```
 git clone git@github.com:Alexandra2706/foodgram-project-react.git
 ```
 
+В клонированном репозитории создать secrets:
+
 ```
+ - DB_ENGINE - django.db.backends.postgresql
+ - DB_HOST - db
+ - DB_NAME - postgres
+ - DB_PORT - 5432
+ - DOCKER_PASSWORD - <ваш_пароль_dockerhub>
+ - DOCKER_USERNAME -<ваш_username_dockerhub> 
+ - HOST - IP-адрес вашего сервера
+ - PASSPHRASE - пароль к ssh-ключу
+ - POSTGRES_PASSWORD - postgres
+ - POSTGRES_USER -postgres
+ - SSH_KEY - ваш ssh-ключ
+ - TELEGRAM_TO - ID вашего телеграм-аккаунта
+ - TELEGRAM_TOKEN - токен вашего бота
+ - USER - имя пользователя для подключения к серверу
+```
+
+На сервере усиановить докер:
+
+```
+sudo apt install docker.io
+```
+
+Изменить ip-адрес сервера в файле:
+
+```
+/infra/nginx/default.conf
+```
+
+Подключиться к серверу по ssh-ключу:
+
+```
+ssh your_login@pu.bl.ic.ip
+```
+
+Скопировать файлы docker-compose.yaml и nginx/default.conf на сервер в home/<ваш_username>/docker-compose.yaml и home/<ваш_username>/nginx/default.conf соответственно
+
+```
+ - docker-compose.yaml в home/<ваш_username>/docker-compose.yaml
+ - nginx/default.conf в home/<ваш_username>/nginx/default.conf
+```
+
+Запушить проект на сервер:
+
+```
+ - git add .
+ - git commit -m "comment"
+ - git push
+```
+
+Запустить docker-compose:
+
+```
+docker-composer up
+```
+
+Выполнить миграцииб импортировать данные, создать суперюзера, собрать статику:
+
+```
+docker-compose exec web python manage.py migrate
+sudo docker-compose exec web python manage.py load_all_data
+sudo docker-compose exec web python manage.py load_tags
+docker-compose exec web python manage.py createsuperuser
+docker-compose exec web python manage.py collectstatic --no-input
+```
+
+Проект можно посмотреть по адресу:
+
+```
+http://84.201.141.88/admin/login/?next=/admin/
+```
+
+или
+
+```
+http://myproject.hopto.org/admin/login/?next=/admin/
+```
+
+Логин и пароль:
+
+```
+login: addmin
+password: addmin
+```
+
+### Установка, Как запустить проект локально:
+
+Клонировать репозиторий и перейти в него в командной строке:
+
+```
+git clone git@github.com:Alexandra2706/foodgram-project-react.git
 cd foodgram-project-react
 ```
 

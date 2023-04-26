@@ -1,25 +1,15 @@
-import base64
-
 from django.contrib.auth import password_validation
-from django.core.files.base import ContentFile
 from django.db import transaction
 from django.db.models import F
+from drf_extra_fields.fields import Base64ImageField
 from recipes.models import Ingredient, Recipe, RecipeIngredient, Tag
 from rest_framework import serializers
 from users.models import Subscription, User
 
 
-class Base64ImageField(serializers.ImageField):
-    def to_internal_value(self, data):
-        if isinstance(data, str) and data.startswith('data:image'):
-            format, imgstr = data.split(';base64,')
-            ext = format.split('/')[-1]
-            data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-        return super().to_internal_value(data)
-
-
 class TagSerializer(serializers.ModelSerializer):
     """Сериализатор для тегов"""
+
     class Meta:
         model = Tag
         fields = ('id', 'name', 'color', 'slug')
@@ -27,6 +17,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 class IngredientSerializer(serializers.ModelSerializer):
     """Сериализатор для ингредиентов"""
+
     class Meta:
         model = Ingredient
         fields = ('id', 'name', 'measurement_unit')
@@ -41,7 +32,7 @@ class UserGetSerializer(serializers.ModelSerializer):
         fields = ('email', 'id', 'username', 'first_name', 'last_name',
                   'password', 'is_subscribed')
         extra_kwargs = {
-            "password": {"write_only": True},
+            'password': {'write_only': True},
         }
 
     def get_is_subscribed(self, obj):
@@ -53,6 +44,7 @@ class UserGetSerializer(serializers.ModelSerializer):
 
 class UserPostSerializer(serializers.ModelSerializer):
     """Сериализатор для регистрации пользователя"""
+
     class Meta:
         model = User
         fields = ('email', 'username', 'first_name', 'last_name', 'password')
@@ -182,20 +174,15 @@ class RecipePostSerializer(serializers.ModelSerializer):
                   'cooking_time')
 
     def validate(self, data):
-        author = self.context['request'].user
-        name = data.get('name')
-        if Recipe.objects.filter(author=author, name=name).exists():
-            raise serializers.ValidationError('рецепт уже существует')
         ingredients = data.get('ingredients')
         ingredient_list = []
         for ingredient in ingredients:
             id = ingredient.get('id').id
             if not Ingredient.objects.filter(id=id).exists():
-                raise serializers.ValidationError(
-                    {'ingredients': ['Такого инградиента нет']})
+                raise serializers.ValidationError('Такого инградиента нет')
             if id in ingredient_list:
                 raise serializers.ValidationError(
-                    {'ingredients': ['Игредиенты не должны повторяться']})
+                    'Игредиенты не должны повторяться')
             ingredient_list.append(id)
         tags = data.get('tags')
         tag = tags[0]
@@ -213,9 +200,16 @@ class RecipePostSerializer(serializers.ModelSerializer):
                 'Время приготовления должно быть не меньше 1 минуты')
         return data
 
+    def validate_recipe_exist(self, data):
+        author = self.context['request'].user
+        name = data.get('name')
+        if Recipe.objects.filter(author=author, name=name).exists():
+            raise serializers.ValidationError('рецепт уже существует')
+
     @transaction.atomic(durable=True)
     def create(self, validated_data):
         """Создание рецепта"""
+        self.validate_recipe_exist(validated_data)
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
         recipe = Recipe.objects.create(**validated_data)
@@ -231,11 +225,6 @@ class RecipePostSerializer(serializers.ModelSerializer):
     @transaction.atomic(durable=True)
     def update(self, instance, validated_data):
         """Обновление рецепта"""
-        instance.name = validated_data.get('name', instance.name)
-        instance.text = validated_data.get('text', instance.text)
-        instance.image = validated_data.get('image', instance.image)
-        instance.cooking_time = validated_data.get('cooking_time',
-                                                   instance.cooking_time)
         if 'tags' in validated_data:
             tags_data = validated_data.pop('tags')
             instance.tags.clear()

@@ -22,7 +22,7 @@ class Recipe(models.Model):
         verbose_name='Описание')
     ingredients = models.ManyToManyField(
         'Ingredient',
-        verbose_name='Инградиенты',
+        verbose_name='Ингредиенты',
         through='RecipeIngredient'
     )
     tags = models.ManyToManyField(
@@ -80,7 +80,7 @@ class Tag(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(
-        verbose_name='Название инградиента',
+        verbose_name='Название ингредиента',
         max_length=200
     )
     measurement_unit = models.CharField(
@@ -89,8 +89,13 @@ class Ingredient(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Инградиент'
-        verbose_name_plural = 'Инградиенты'
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'Ингредиенты'
+        constraints = [
+            models.UniqueConstraint(
+                fields=('name', 'measurement_unit',),
+                name='unique_name_unit'
+            )]
 
     def __str__(self):
         return f'{self.name}, {self.measurement_unit}'
@@ -104,18 +109,18 @@ class RecipeIngredient(models.Model):
     )
     ingredient = models.ForeignKey(
         Ingredient,
-        verbose_name='Инградиент',
+        verbose_name='Ингредиент',
         related_name='recipe_ingredients',
         on_delete=models.PROTECT
     )
     amount = models.IntegerField(
         verbose_name='Количество',
-        validators=[MinValueValidator(1), ]
+        validators=[MinValueValidator(1, message='Минимальное значение 1'), ]
     )
 
     class Meta:
-        verbose_name = 'Количество инградиента'
-        verbose_name_plural = 'Количество инградиента'
+        verbose_name = 'Количество ингредиента'
+        verbose_name_plural = 'Количество ингредиента'
         constraints = [
             models.UniqueConstraint(
                 fields=('recipe', 'ingredient',),

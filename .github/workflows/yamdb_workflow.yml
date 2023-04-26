@@ -61,7 +61,8 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
-          script: |            
+          script: |  
+            pwd
             cd infra
             sudo docker-compose stop
             sudo docker-compose rm -f backend

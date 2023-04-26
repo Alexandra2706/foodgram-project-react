@@ -8,8 +8,8 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data/
 
-  backend:
-    build: ../backend/
+  backend: 
+    image: alexandra2706/backend/
     restart: always
     volumes:
       - static_value:/app/static/

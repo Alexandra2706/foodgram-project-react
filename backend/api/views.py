@@ -24,7 +24,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     """Получить список ингредиентов"""
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('^name',)
     pagination_class = None

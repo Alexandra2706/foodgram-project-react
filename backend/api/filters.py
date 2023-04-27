@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from recipes.models import Ingredient, Recipe, User
+from recipes.models import Ingredient, Recipe, Tag, User
 
 
 class CharFilterInFilter(filters.BaseInFilter, filters.CharFilter):
@@ -15,7 +15,8 @@ class IngredientFilter(filters.FilterSet):
 
 
 class RecipeFilter(filters.FilterSet):
-    tags = CharFilterInFilter(field_name='tags__slug', lookup_expr='in')
+    tags = CharFilterInFilter(field_name='tags__slug', lookup_expr='in',
+                              queryset=Tag.objects.all())
     author = filters.ModelChoiceFilter(queryset=User.objects.all())
     is_favorited = filters.BooleanFilter(method='filter_is_favorited')
     is_in_shopping_cart = filters.BooleanFilter(

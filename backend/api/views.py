@@ -34,7 +34,7 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     """Получить список тегов"""
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     pagination_class = None
 
 

@@ -145,7 +145,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         return ingredients
 
     def get_is_favorited(self, obj):
-        return (self.context.[
+        return (self.context[
                     'request'].user.is_authenticated and obj.favorite.filter(
             user=self.context['request'].user, recipe=obj).exists())
 

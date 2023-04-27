@@ -9,6 +9,20 @@
 
 ![example workflow](https://github.com/alexandra2706/foodgram-project-react/actions/workflows/yamdb_workflow.yml/badge.svg)
 
+Проект можно посмотреть по адресу:
+
+```
+http://84.201.141.88/admin/login/?next=/admin/
+http://84.201.141.88/recipes
+```
+
+Логин и пароль:
+
+```
+login: admin@mail.ru
+password: admin
+```
+
 ### Установка, Как запустить проект на сервере:
 
 Клонировать репозиторий:
@@ -85,24 +99,6 @@ docker-compose exec backend python manage.py createsuperuser
 docker-compose exec backend python manage.py collectstatic --no-input
 ```
 
-Проект можно посмотреть по адресу:
-
-```
-http://84.201.141.88/admin/login/?next=/admin/
-```
-
-или
-
-```
-http://myproject.hopto.org/admin/login/?next=/admin/
-```
-
-Логин и пароль:
-
-```
-login: addmin
-password: addmin
-```
 
 ### Установка, Как запустить проект локально:
 
@@ -154,13 +150,13 @@ python manage.py migrate
 Создать суперюзера:
 
 ```
-python3 manage.py createsuperuser
+python manage.py createsuperuser
 ```
 
 Запустить проект:
 
 ```
-python3 manage.py runserver
+python manage.py runserver
 ```
 
 ### Примеры работы с API для всех пользователей

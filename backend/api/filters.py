@@ -6,7 +6,7 @@ class CharFilterInFilter(filters.BaseInFilter, filters.CharFilter):
     pass
 
 
-class IngredientFilter(filter.FilterSet):
+class IngredientFilter(filters.FilterSet):
     name = filters.CharFilter(lookup_expr='istartswith')
 
     class Meta:

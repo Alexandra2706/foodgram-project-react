@@ -1,9 +1,17 @@
 from django_filters import rest_framework as filters
-from recipes.models import Recipe, User
+from recipes.models import Ingredient, Recipe, User
 
 
 class CharFilterInFilter(filters.BaseInFilter, filters.CharFilter):
     pass
+
+
+class IngredientFilter(filter.FilterSet):
+    name = filters.CharFilter(lookup_expr='istartswith')
+
+    class Meta:
+        model = Ingredient
+        fields = ('name',)
 
 
 class RecipeFilter(filters.FilterSet):

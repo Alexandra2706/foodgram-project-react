@@ -11,8 +11,8 @@
 Проект можно посмотреть по адресу:
 
 ```
-http://84.201.141.88/admin/login/?next=/admin/
-http://84.201.141.88/recipes
+http://151.115.76.147/admin/login/?next=/admin/
+http://151.115.76.147/recipes
 ```
 
 Логин и пароль:
